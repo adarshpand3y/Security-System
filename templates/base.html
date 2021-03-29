@@ -193,7 +193,7 @@
         
         function validateRegForm() {
             var totNumFields = 0, numSuccFields = 0;
-            numSuccFields += validateUtil('#register_username', /^[0-9a-zA-Z]$/, 'Username should contain digits and alphabets only.');
+            numSuccFields += validateUtil('#register_username', /^[0-9a-zA-Z]*$/, 'Username should contain digits and alphabets only.');
             ++totNumFields;
 
             numSuccFields += validateUtil('#register_email', /\S+@\S+\.\S+/, 'Please enter a proper email address.');
@@ -205,7 +205,7 @@
             numSuccFields += validateUtil('#register_adhaar', /^\d{12}$/, 'Please enter a proper 10-digit phone number.');
             ++totNumFields;
 
-            if (document.querySelector('#register_conf_password').value !== document.querySelector('#register_conf_password').value){
+            if (document.querySelector('#register_conf_password').value !== document.querySelector('#register_password').value) {
                 var errElement = document.createElement('div');
                 errElement.className = 'text-danger';
                 errElement.append("Passwords doesn't match, please reconfirm your password.");
