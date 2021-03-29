@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}New Report Submission{% endblock title %}
+
+{% block body %}
+<div class="container my-4">
+    <div class="card">
+        <div class="card-body">
+            <h3>New Report</h3>
+            <p>User: {{request.user}}</p>
+            <form action="/submitreport" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="user" value="{{request.user}}">
+                <div class="mb-3">
+                    <label for="report_title" class="form-label">Enter a title</label>
+                    <input type="text" name="report_title" class="form-control" id="report_title"
+                        placeholder="Report Title Here">
+                </div>
+                <div class="mb-3">
+                    <label for="report_body" class="form-label">Type your grievance(s) in the
+                        following box</label>
+                    <textarea placeholder="Type your grievances here" name="report_body" class="form-control" id="report_body"
+                        rows="5"></textarea>
+                </div>
+                <div class="d-grid gap-2 col-4 mx-auto">
+                    <button class="btn btn-success" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock body %}

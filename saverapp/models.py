@@ -7,6 +7,7 @@ class Report(models.Model):
     submitted_by = models.CharField(max_length=14)
     timeStamp = models.DateTimeField(blank=True)
     content = models.TextField()
+    status = models.CharField(max_length=15, choices=[('Submitted', 'Submitted'), ('Approved', 'Approved'), ('Action Taken', 'Action Taken')])
 
     def __str__(self):
         return self.title
