@@ -122,7 +122,7 @@
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <form action="/handleRegister" method="POST">
+            <form id="registration_form" action="/handleRegister" method="POST">
                 {% csrf_token %}
 
                 <div class="mb-3">
