@@ -27,18 +27,39 @@ def handleSignup(request):
         conf_password = request.POST.get('register_conf_password')
 
         # check for errorneous input
-        
+        if len(firstname) <= 3:
+            messages.error(request, "Firstname length is too short.")
+            return redirect("/")
+        if len(firstname) >= 15:
+            messages.error(request, "Firstname length is too long.")
+            return redirect("/")
+        if len(lastname) <= 3:
+            messages.error(request, "Lastname length is too short.")
+            return redirect("/")
+        if len(lastname) >= 15:
+            messages.error(request, "Lastname length is too long.")
+            return redirect("/")
+        if len(username) <= 3:
+            messages.error(request, "Username length is too short.")
+            return redirect("/")
+        if len(username) >= 15:
+            messages.error(request, "Username length is too long.")
+            return redirect("/")
+        if User.objects.filter(username = username).exists():
+            messages.error(request, "The username you have taken already exists.")
+            return redirect("/")
+        if password != conf_password:
+            messages.error(request, "Passwords do not match.")
+            return redirect("/")
+            
         # Create the user
-        if password == conf_password:
-            myuser = User.objects.create_user(username, email, password)
-            myuser.first_name = firstname
-            myuser.last_name = lastname
-            myuser.save()
-            userdetails = UserDetails(username=username, adhaar_number=adhaar, phone_number=phone)
-            userdetails.save()
-            messages.success(request, "User created successfully. Now log in with the details provided.")
-        else:
-            messages.error(request, "There was some error in form data, please try again.")
+        myuser = User.objects.create_user(username, email, password)
+        myuser.first_name = firstname
+        myuser.last_name = lastname
+        myuser.save()
+        userdetails = UserDetails(username=username, adhaar_number=adhaar, phone_number=phone)
+        userdetails.save()
+        messages.success(request, "User created successfully. Now log in with the details provided.")
     return redirect('/')
 
 def handleLogin(request):
