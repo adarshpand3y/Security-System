@@ -122,7 +122,7 @@
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <form action="/handleRegister" method="POST">
+            <form id="registration_form" action="/handleRegister" method="POST">
                 {% csrf_token %}
 
                 <div class="mb-3">
@@ -153,7 +153,7 @@
                 <div class="mb-3">
                     <label for="register_adhaar" class="form-label">Adhaar No.</label>
                     <input type="number" name="register_adhaar" class="form-control" id="register_adhaar"
-                        placeholder="XXXX-XXXX-XXXX">
+                        placeholder="XXXXXXXXXXXX">
                 </div>
                 <div class="mb-3">
                     <label for="register_password" class="form-label">Password</label>
@@ -169,6 +169,63 @@
             </form>
         </div>
     </div>
+
+    <script>
+
+        /**
+         * 
+         * @author Abir Ganguly.
+         * 
+         */
+
+        function validateUtil(elementID, pattern, errmsg) {
+            var element = document.querySelector(elementID);
+            if (!pattern.test(element.value)) {
+                var errElement = document.createElement('div');
+                errElement.className = 'text-danger';
+                errElement.append(errmsg);
+                element.parentElement.append(errElement);
+                element.addEventListener('click', function() { errElement.hidden = true; });
+                return 0;
+            }
+            return 1;
+        }
+        
+        function validateRegForm() {
+            var totNumFields = 0, numSuccFields = 0;
+            numSuccFields += validateUtil('#register_username', /^[0-9a-zA-Z]*$/, 'Username should contain digits and alphabets only.');
+            ++totNumFields;
+
+            numSuccFields += validateUtil('#register_email', /\S+@\S+\.\S+/, 'Please enter a proper email address.');
+            ++totNumFields;
+
+            numSuccFields += validateUtil('#register_phone', /^\d{10}$/, 'Please enter a proper 10-digit phone number.');
+            ++totNumFields;
+
+            numSuccFields += validateUtil('#register_adhaar', /^\d{12}$/, 'Please enter a proper 12-digit adhaar number.');
+            ++totNumFields;
+
+            if (document.querySelector('#register_conf_password').value !== document.querySelector('#register_password').value) {
+                var errElement = document.createElement('div');
+                errElement.className = 'text-danger';
+                errElement.append("Passwords doesn't match, please reconfirm your password.");
+                document.querySelector('#register_conf_password').parentElement.append(errElement);
+                document.querySelector('#register_conf_password').addEventListener('click', function() { errElement.hidden = true; });
+            } else {
+                ++numSuccFields;
+            }
+            totNumFields++;
+        
+            return (numSuccFields === totNumFields);
+        }
+
+        document.querySelector('#registration_form').addEventListener('submit', function (event) {
+        if (!validateRegForm()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+    });
+    </script>
 
     {% block body %}
     {% endblock body %}
